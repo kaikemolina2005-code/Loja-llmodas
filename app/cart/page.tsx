@@ -30,11 +30,16 @@ export default function CartPage() {
     setIsSyncing(true);
 
     try {
-      const urlFinal = getEcwidCheckoutUrl(cart.map(item => ({
+      const cartItems = cart.map(item => ({
         id: item.id,
         id_ecwid: item.id_ecwid,
         quantity: item.quantity,
-      })));
+      }));
+      
+      console.log('Carrinho para Ecwid (debug completo):', JSON.stringify(cartItems, null, 2));
+      
+      const urlFinal = getEcwidCheckoutUrl(cartItems);
+      console.log('URL final gerada:', urlFinal);
 
       window.location.href = urlFinal;
     } catch (error) {
