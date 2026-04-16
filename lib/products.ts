@@ -71,11 +71,27 @@ export const getEcwidCheckoutUrl = (items: { id: number; id_ecwid?: string; quan
   const cartData = items
     .filter(item => item.quantity > 0)
     .map(item => {
-      const ecwidId = item.id_ecwid ? Number(item.id_ecwid) : item.id;
+      // Tenta usar id_ecwid se disponível e válido, senão usa id
+      let ecwidId: number;
+      
+      if (item.id_ecwid && item.id_ecwid.trim()) {
+        ecwidId = Number(item.id_ecwid.trim());
+      } else {
+        ecwidId = item.id;
+      }
+      
+      // Valida se é um número válido
+      if (isNaN(ecwidId)) {
+        console.warn(`ID inválido para produto: ${JSON.stringify(item)}`);
+        ecwidId = item.id;
+      }
+      
       return `${ecwidId}:${item.quantity}`;
     })
     .join(',');
 
+  console.log('Carrinho para Ecwid:', cartData);
+  
   return cartData
     ? `${ECWID_CHECKOUT_BASE_URL}#!/~/cart/add=${cartData}`
     : ECWID_CHECKOUT_BASE_URL;

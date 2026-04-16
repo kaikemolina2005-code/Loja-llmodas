@@ -52,8 +52,11 @@ export default function AnunciosSection() {
 
   const handleAddToCart = (anuncio: Anuncio) => {
     const productSlug = getWordPressProductSlug(anuncio);
+    // Garante que id_ecwid é uma string válida
+    const ecwidId = (anuncio.id_ecwid?.trim() || '').toString();
+    
     const wpProduct = {
-      id: parseInt(anuncio.id_ecwid?.trim() || '') || anuncio.id,
+      id: parseInt(ecwidId) || anuncio.id,
       slug: productSlug,
       name: anuncio.titulo,
       price: Number(anuncio.preco) || 0,
@@ -62,7 +65,7 @@ export default function AnunciosSection() {
       categorySlug: "wordpress",
       description: anuncio.descricao_curta,
       details: [],
-      id_ecwid: anuncio.id_ecwid,
+      id_ecwid: ecwidId, // Sempre string
       url_ecwid: anuncio.url_ecwid,
       isWordPress: true,
     };
