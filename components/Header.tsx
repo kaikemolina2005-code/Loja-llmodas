@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -7,7 +9,8 @@ import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
 import { storeConfig } from '@/config/store';
 import { fetchWordPressCategories } from '@/lib/products';
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
+import { SignInButton, UserButton } from "@clerk/nextjs";
 
 interface Category {
   name: string;
@@ -17,6 +20,7 @@ interface Category {
 
 export const Header = () => {
   const { cartCount } = useCart();
+  const { userId } = useAuth();
   const router = useRouter();
 
   // Split name for the logo fallback styling (e.g., "LL MODAS" -> "LL" and "MODAS")
@@ -106,17 +110,15 @@ export const Header = () => {
             <span className="text-gray-400 whitespace-nowrap">Carregando categorias...</span>
           )}
           <div className="flex items-center gap-4">
-            <SignedOut>
+            {!userId ? (
               <SignInButton mode="modal">
                 <button className="hover:text-brand-accent transition-colors whitespace-nowrap cursor-pointer uppercase text-xs tracking-widest font-bold">
                   Minha Conta
                 </button>
               </SignInButton>
-            </SignedOut>
-
-            <SignedIn>
-              <UserButton afterSignOutUrl="/" />
-            </SignedIn>
+            ) : (
+              <UserButton />
+            )}
           </div>
         </nav>
 
@@ -209,17 +211,15 @@ export const Header = () => {
               <Link href="/minha-conta" onClick={() => setIsMenuOpen(false)}>Minha Conta</Link>
               
               <div className="flex items-center gap-4 pt-4">
-                <SignedOut>
+                {!userId ? (
                   <SignInButton mode="modal">
                     <button className="bg-pink-500 text-white px-5 py-2 rounded-full font-medium hover:bg-pink-600 transition text-lg">
                       Entrar
                     </button>
                   </SignInButton>
-                </SignedOut>
-                
-                <SignedIn>
-                  <UserButton afterSignOutUrl="/" />
-                </SignedIn>
+                ) : (
+                  <UserButton />
+                )}
               </div>
             </nav>
           </motion.div>
