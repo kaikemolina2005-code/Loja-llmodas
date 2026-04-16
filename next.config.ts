@@ -21,7 +21,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  output: 'export',
   basePath: '/ai-site2',
   trailingSlash: true,
   transpilePackages: ['motion'],
