@@ -1,0 +1,42 @@
+<!--
+  ============================================================
+  VERSÃO SIMPLES — apenas HTML + JS, sem PHP
+  Para plugins como "Insert Headers and Footers":
+    Cole no campo "Scripts in Footer" (todo o site)
+    A condição JS filtra automaticamente apenas URLs /store/
+  ============================================================
+-->
+
+<div id="ecwid-back" style="
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    background:#000;
+    color:#fff;
+    text-align:center;
+    padding:12px;
+    z-index:99999;
+    font-weight:600;
+    cursor:pointer;
+    font-family:sans-serif;
+    font-size:14px;
+    letter-spacing:0.04em;
+    display:none;
+">
+    ← Continuar comprando
+</div>
+
+<script>
+(function() {
+    if (window.location.href.indexOf('/store') !== -1) {
+        var el = document.getElementById('ecwid-back');
+        if (el) {
+            el.style.display = 'block';
+            el.addEventListener('click', function() {
+                window.location.href = 'https://llmodas.shop/ai-site2/';
+            });
+        }
+    }
+})();
+</script>

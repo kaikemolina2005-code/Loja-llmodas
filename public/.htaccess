@@ -1,0 +1,28 @@
+# ============================================================
+# Ecwid Authentication Callback - Server-Side Redirect
+# ============================================================
+# Intercepta qualquer request para /minha-conta que contenha
+# parâmetros de autenticação do Ecwid e redireciona para o
+# ambiente real do Ecwid ANTES da renderização do React.
+#
+# Isso garante que magic links funcionem mesmo se o JS estiver
+# bloqueado por CSP ou ainda não hidratado.
+# ============================================================
+
+Options -MultiViews
+RewriteEngine On
+RewriteBase /ai-site2/
+
+# Detecta parâmetros de autenticação do Ecwid na query string
+# e redireciona /minha-conta para /store/account preservando todos os params
+RewriteCond %{QUERY_STRING} (^|&)(~mode|~key|~t|~return_url|~orderid|~cartid|callback)= [NC]
+RewriteRule ^minha-conta(/.*)?$ https://llmodas.shop/store/account [R=302,QSA,L]
+
+# ============================================================
+# Email Validation Redirect
+# ============================================================
+# Redireciona requests para /validar-email para o backend
+# que processa a validação de email
+# ============================================================
+
+RewriteRule ^validar-email(/.*)?$ https://llmodas.shop/validar-email [R=302,QSA,L]
