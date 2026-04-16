@@ -41,7 +41,9 @@ export default function CartPage() {
       const urlFinal = getEcwidCheckoutUrl(cartItems);
       console.log('URL final gerada:', urlFinal);
 
-      window.location.href = urlFinal;
+      // Abrir em nova aba para preservar sessão do Clerk
+      window.open(urlFinal, '_blank');
+      setIsSyncing(false);
     } catch (error) {
       console.error("Erro na geração do checkout Ecwid:", error);
       alert("Não foi possível finalizar a compra no momento. Tente novamente.");
