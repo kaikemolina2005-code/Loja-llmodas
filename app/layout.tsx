@@ -1,5 +1,6 @@
 import type {Metadata} from 'next';
 import { Inter } from 'next/font/google';
+import { ClerkProvider } from '@clerk/nextjs';
 import './globals.css';
 import { CartProvider } from '@/context/CartContext';
 import WhatsAppButton from '@/components/WhatsAppButton';
@@ -20,23 +21,25 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" className={`${inter.variable}`}>
-      <head>
-        <style dangerouslySetInnerHTML={{
-          __html: `:root { --brand-primary: ${storeConfig.primaryColor}; }`
-        }} />
-        <Script 
-          src={`https://app.ecwid.com/script.js?${ECWID_STORE_ID}&data_platform=nextjs`} 
-          strategy="afterInteractive"
-        />
-      </head>
-      <body className="font-sans" suppressHydrationWarning>
-        <CartProvider>
-          <EcwidRedirectHandler />
-          {children}
-          <WhatsAppButton />
-        </CartProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="pt-br" className={`${inter.variable}`}>
+        <head>
+          <style dangerouslySetInnerHTML={{
+            __html: `:root { --brand-primary: ${storeConfig.primaryColor}; }`
+          }} />
+          <Script 
+            src={`https://app.ecwid.com/script.js?${ECWID_STORE_ID}&data_platform=nextjs`} 
+            strategy="afterInteractive"
+          />
+        </head>
+        <body className="font-sans" suppressHydrationWarning>
+          <CartProvider>
+            <EcwidRedirectHandler />
+            {children}
+            <WhatsAppButton />
+          </CartProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

@@ -7,6 +7,7 @@ import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
 import { storeConfig } from '@/config/store';
 import { fetchWordPressCategories } from '@/lib/products';
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 interface Category {
   name: string;
@@ -104,7 +105,19 @@ export const Header = () => {
           ) : (
             <span className="text-gray-400 whitespace-nowrap">Carregando categorias...</span>
           )}
-          <Link href="/minha-conta" className="hover:text-brand-accent transition-colors whitespace-nowrap">Minha Conta</Link>
+          <div className="flex items-center gap-4">
+            <SignedOut>
+              <SignInButton mode="modal">
+                <button className="hover:text-brand-accent transition-colors whitespace-nowrap cursor-pointer uppercase text-xs tracking-widest font-bold">
+                  Minha Conta
+                </button>
+              </SignInButton>
+            </SignedOut>
+
+            <SignedIn>
+              <UserButton afterSignOutUrl="/" />
+            </SignedIn>
+          </div>
         </nav>
 
         <div className="flex items-center space-x-4">
@@ -148,10 +161,6 @@ export const Header = () => {
               <Search size={20} />
             </button>
           </div>
-
-          <Link href="/minha-conta" className="p-2 hover:bg-black/5 rounded-full transition-colors">
-            <User size={20} />
-          </Link>
 
           <Link href="/cart" className="p-2 hover:bg-black/5 rounded-full transition-colors relative">
             <ShoppingCart size={20} />
@@ -198,6 +207,20 @@ export const Header = () => {
                 <span className="text-gray-400 text-xl">Carregando categorias...</span>
               )}
               <Link href="/minha-conta" onClick={() => setIsMenuOpen(false)}>Minha Conta</Link>
+              
+              <div className="flex items-center gap-4 pt-4">
+                <SignedOut>
+                  <SignInButton mode="modal">
+                    <button className="bg-pink-500 text-white px-5 py-2 rounded-full font-medium hover:bg-pink-600 transition text-lg">
+                      Entrar
+                    </button>
+                  </SignInButton>
+                </SignedOut>
+                
+                <SignedIn>
+                  <UserButton afterSignOutUrl="/" />
+                </SignedIn>
+              </div>
             </nav>
           </motion.div>
         )}
