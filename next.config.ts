@@ -1,7 +1,6 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  assetPrefix: '/ai-site2',
   reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
@@ -21,8 +20,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  basePath: '/ai-site2',
-  trailingSlash: true,
+  trailingSlash: false,
   transpilePackages: ['motion'],
   webpack: (config, { dev }) => {
     // HMR is disabled in AI Studio via DISABLE_HMR env var.
