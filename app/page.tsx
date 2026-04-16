@@ -30,7 +30,7 @@ const Hero = () => {
 
       <div className="absolute inset-0 z-0">
         <Image 
-          src="/ai-site2/products/banner-1.jpg" 
+          src="/products/banner-1.jpg" 
           alt="Hero Background" 
           fill 
           className="object-cover"

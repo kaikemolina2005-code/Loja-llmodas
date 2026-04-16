@@ -87,7 +87,7 @@ export const PRODUCTS: Product[] = [
     slug: 'vestido-midi-jeans-feminino-alca-botoes-tres-marias-rodado',
     name: 'Vestido Midi Jeans Feminino Alça Botões Três Marias Rodado', 
     price: 140.42, 
-    image: '/ai-site2/products/vestido-midi-jeans.webp', 
+    image: '/products/vestido-midi-jeans.webp', 
     category: 'Vestidos',
     categorySlug: 'vestidos',
     description: 'Vestido midi jeans com alças ajustáveis e botões frontais. Modelo Três Marias com caimento rodado e elegante.',
@@ -98,7 +98,7 @@ export const PRODUCTS: Product[] = [
     slug: 'vestido-feminino-midi-evase-elegante',
     name: 'Vestido Feminino Midi Evase Elegante Natal E Ano Novo', 
     price: 110.31, 
-    image: '/ai-site2/products/vestido-midi-evase.webp', 
+    image: '/products/vestido-midi-evase.webp', 
     category: 'Vestidos',
     categorySlug: 'vestidos',
     description: 'Vestido midi evasê perfeito para festas de fim de ano. Tecido sofisticado com caimento impecável.',
@@ -109,7 +109,7 @@ export const PRODUCTS: Product[] = [
     slug: 'vestido-feminino-longo-elastex-acinturado',
     name: 'Vestido Feminino Longo Elastex Acinturado Laço Elegante', 
     price: 119.90, 
-    image: '/ai-site2/products/vestido-longo-elastex.webp', 
+    image: '/products/vestido-longo-elastex.webp', 
     category: 'Vestidos',
     categorySlug: 'vestidos',
     description: 'Vestido longo com detalhe em elastex na cintura para melhor ajuste. Detalhe de laço que traz delicadeza à peça.',
@@ -120,7 +120,7 @@ export const PRODUCTS: Product[] = [
     slug: 'vestido-feminino-longo-listrado-alcas',
     name: 'Vestido Feminino Longo Listrado Alças Ajustáveis Moda Verão', 
     price: 115.62, 
-    image: '/ai-site2/products/vestido-longo-listrado.webp', 
+    image: '/products/vestido-longo-listrado.webp', 
     category: 'Vestidos',
     categorySlug: 'vestidos',
     description: 'Vestido longo listrado, a cara do verão. Alças ajustáveis para maior conforto e estilo.',
@@ -131,7 +131,7 @@ export const PRODUCTS: Product[] = [
     slug: 'conjunto-feminino-alfaiataria-colete-short',
     name: 'Conjunto Feminino Em Alfaiataria Colete E Short', 
     price: 80.99, 
-    image: '/ai-site2/products/conjunto-alfaiataria-short.webp', 
+    image: '/products/conjunto-alfaiataria-short.webp', 
     category: 'Conjuntos',
     categorySlug: 'conjuntos',
     description: 'Conjunto moderno em alfaiataria composto por colete estruturado e shorts confortável.',
@@ -142,7 +142,7 @@ export const PRODUCTS: Product[] = [
     slug: 'conjunto-feminino-alfaiataria-primavera-verao',
     name: 'Conjunto Feminino De Alfaiataria Primavera/verão Ano Novo', 
     price: 112.30, 
-    image: '/ai-site2/products/vestido-midi-evase-2.webp', 
+    image: '/products/vestido-midi-evase-2.webp', 
     category: 'Conjuntos',
     categorySlug: 'conjuntos',
     description: 'Conjunto de alfaiataria leve para as estações quentes. Elegância garantida para o seu Réveillon.',
@@ -153,7 +153,7 @@ export const PRODUCTS: Product[] = [
     slug: 'conjunto-elegante-skine-calca-colete',
     name: 'Conjunto Elegante Skine Calça E Colete', 
     price: 99.09, 
-    image: '/ai-site2/products/conjunto-skine.webp', 
+    image: '/products/conjunto-skine.webp', 
     category: 'Conjuntos',
     categorySlug: 'conjuntos',
     description: 'Conjunto sofisticado com calça skine e colete combinando. Ideal para um visual profissional e chic.',
@@ -164,7 +164,7 @@ export const PRODUCTS: Product[] = [
     slug: 'conjunto-feminino-mulheres-elegantes-festas',
     name: 'Conjunto Feminino Para Mulheres Elegantes Em Alta Festas', 
     price: 123.40, 
-    image: '/ai-site2/products/conjunto-elegante-festas.webp', 
+    image: '/products/conjunto-elegante-festas.webp', 
     category: 'Conjuntos',
     categorySlug: 'conjuntos',
     description: 'Conjunto luxuoso para ocasiões especiais. Design exclusivo que valoriza a silhueta feminina.',
@@ -175,7 +175,7 @@ export const PRODUCTS: Product[] = [
     slug: 'conjunto-feminino-saia-colete-plissado',
     name: 'Conjunto Feminino Saia E Colete Plissado Lançamento Em Alta', 
     price: 126.34, 
-    image: '/ai-site2/products/conjunto-saia-plissada.webp', 
+    image: '/products/conjunto-saia-plissada.webp', 
     category: 'Conjuntos',
     categorySlug: 'conjuntos',
     description: 'Conjunto tendência com saia plissada e colete. Um visual romântico e moderno ao mesmo tempo.',
@@ -184,9 +184,9 @@ export const PRODUCTS: Product[] = [
 ];
 
 export const CATEGORIES = [
-  { name: 'Vestidos', slug: 'vestidos', image: '/ai-site2/products/vestido-midi-jeans.webp' },
-  { name: 'Conjuntos', slug: 'conjuntos', image: '/ai-site2/products/conjunto-alfaiataria-short.webp' },
-  { name: 'Novidades', slug: 'novidades', image: '/ai-site2/products/vestido-longo-elastex.webp' },
+  { name: 'Vestidos', slug: 'vestidos', image: '/products/vestido-midi-jeans.webp' },
+  { name: 'Conjuntos', slug: 'conjuntos', image: '/products/conjunto-alfaiataria-short.webp' },
+  { name: 'Novidades', slug: 'novidades', image: '/products/vestido-longo-elastex.webp' },
 ];
 
 export const fetchWordPressCategories = async () => {
@@ -210,7 +210,7 @@ export const fetchWordPressCategories = async () => {
           wpCategories.set(slug, {
             name: name,
             slug: slug,
-            image: anuncio.imagem || '/ai-site2/products/default.webp'
+            image: anuncio.imagem || '/products/default.webp'
           });
         }
       }
