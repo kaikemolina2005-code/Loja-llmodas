@@ -56,7 +56,7 @@ export default function AnunciosSection() {
     const ecwidId = (anuncio.id_ecwid?.trim() || '').toString();
     
     const wpProduct = {
-      id: parseInt(ecwidId) || anuncio.id,
+      id: anuncio.id,  // Usar ID único do WordPress, não do Ecwid
       slug: productSlug,
       name: anuncio.titulo,
       price: Number(anuncio.preco) || 0,
@@ -65,7 +65,7 @@ export default function AnunciosSection() {
       categorySlug: "wordpress",
       description: anuncio.descricao_curta,
       details: [],
-      id_ecwid: ecwidId, // Sempre string
+      id_ecwid: ecwidId, // ID do Ecwid separado
       url_ecwid: anuncio.url_ecwid,
       isWordPress: true,
     };

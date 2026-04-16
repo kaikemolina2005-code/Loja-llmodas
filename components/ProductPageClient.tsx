@@ -61,7 +61,7 @@ export default function ProductPageClient({ slug, wpProduct }: { slug: string; w
 
         const itemSlug = (anuncio.id_ecwid?.toString().trim() || String(anuncio.id)).toString();
         setRemoteProduct({
-          id: parseInt(anuncio.id_ecwid) || anuncio.id,
+          id: anuncio.id,  // Usar ID único do WordPress
           slug: itemSlug,
           name: anuncio.titulo,
           price: Number(anuncio.preco) || 0,
@@ -70,7 +70,7 @@ export default function ProductPageClient({ slug, wpProduct }: { slug: string; w
           categorySlug: 'wordpress',
           description: anuncio.descricao_curta,
           details: [],
-          id_ecwid: anuncio.id_ecwid,
+          id_ecwid: anuncio.id_ecwid,  // ID do Ecwid separado
           url_ecwid: anuncio.url_ecwid,
           isWordPress: true,
         });
