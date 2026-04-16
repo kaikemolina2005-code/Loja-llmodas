@@ -93,7 +93,7 @@ export const getEcwidCheckoutUrl = (items: { id: number; id_ecwid?: string; quan
   console.log('Carrinho para Ecwid:', cartData);
   
   return cartData
-    ? `${ECWID_CHECKOUT_BASE_URL}#!/~/cart/add=${cartData}`
+    ? `${ECWID_CHECKOUT_BASE_URL}cart?add=${cartData}`
     : ECWID_CHECKOUT_BASE_URL;
 };
 

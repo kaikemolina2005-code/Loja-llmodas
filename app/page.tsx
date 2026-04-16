@@ -8,7 +8,6 @@ import { motion } from 'motion/react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
-import AnunciosSection from '@/components/AnunciosSection';
 import { PRODUCTS, CATEGORIES } from '@/lib/products';
 import { storeConfig } from '@/config/store';
 
@@ -72,8 +71,6 @@ export default function LandingPage() {
       
       <main>
         <Hero />
-
-        <AnunciosSection />
 
         {/* Categories Section */}
         <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
