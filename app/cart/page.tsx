@@ -40,9 +40,7 @@ export default function CartPage() {
 
       const urlFinal = getEcwidCheckoutUrl(cartItems);
       console.log('URL final gerada:', urlFinal);
-
-      // A sessão do Clerk só permanece consistente se o retorno do Ecwid apontar para o app atual.
-      window.location.href = urlFinal;
+  window.location.href = urlFinal;
     } catch (error) {
       console.error("Erro na geração do checkout Ecwid:", error);
       alert("Não foi possível finalizar a compra no momento. Tente novamente.");
