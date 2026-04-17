@@ -37,7 +37,7 @@ export const Header = () => {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/ai-site2/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setIsSearchOpen(false);
       setSearchQuery('');
     }
@@ -80,7 +80,7 @@ export const Header = () => {
           <Link href="/" className="flex items-center gap-2">
             <div className="relative w-10 h-10 md:w-12 md:h-12 overflow-hidden rounded-full shadow-lg">
               <Image 
-                src="/ai-site2/logo.jpg" 
+                src="/logo.jpg" 
                 alt={`${storeConfig.name} Logo`} 
                 fill 
                 className="object-cover"

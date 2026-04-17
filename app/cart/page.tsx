@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useCart } from '@/context/CartContext';
-import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, MessageCircle, CheckCircle } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowRight, ShoppingBag, MessageCircle } from 'lucide-react';
 import { motion } from 'motion/react';
 import { formatPrice, getEcwidCheckoutUrl } from '@/lib/products';
 import { storeConfig } from '@/config/store';
@@ -18,24 +18,8 @@ declare global {
 }
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, cartTotal, cartCount, clearCart } = useCart();
+  const { cart, removeFromCart, updateQuantity, cartTotal, cartCount } = useCart();
   const [isSyncing, setIsSyncing] = useState(false);
-  const [checkoutCompleted, setCheckoutCompleted] = useState(false);
-
-  // Verificar se voltou de um checkout bem-sucedido
-  useEffect(() => {
-    const checkoutPending = localStorage.getItem('ecwid-checkout-pending');
-    if (checkoutPending === 'true') {
-      setCheckoutCompleted(true);
-      // Limpar flags
-      localStorage.removeItem('ecwid-checkout-pending');
-      localStorage.removeItem('ecwid-checkout-timestamp');
-      // Limpar carrinho após compra
-      setTimeout(() => {
-        clearCart();
-      }, 3000);
-    }
-  }, [clearCart]);
 
   const handleEcwidCheckout = async () => {
     if (!cart?.length) {
@@ -51,17 +35,13 @@ export default function CartPage() {
         id_ecwid: item.id_ecwid,
         quantity: item.quantity,
       }));
-      
+
       console.log('Carrinho para Ecwid (debug completo):', JSON.stringify(cartItems, null, 2));
-      
-      // Salvar estado no localStorage antes de sair
-      localStorage.setItem('ecwid-checkout-timestamp', new Date().toISOString());
-      localStorage.setItem('ecwid-checkout-pending', 'true');
-      
+
       const urlFinal = getEcwidCheckoutUrl(cartItems);
       console.log('URL final gerada:', urlFinal);
 
-      // Redirecionar na mesma aba (localStorage vai manter a sessão)
+      // A sessão do Clerk só permanece consistente se o retorno do Ecwid apontar para o app atual.
       window.location.href = urlFinal;
     } catch (error) {
       console.error("Erro na geração do checkout Ecwid:", error);
@@ -69,33 +49,6 @@ export default function CartPage() {
       setIsSyncing(false);
     }
   };
-
-  if (checkoutCompleted) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1 flex items-center justify-center pt-32 pb-24">
-          <div className="text-center px-6">
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-8"
-            >
-              <CheckCircle size={40} className="text-green-600" />
-            </motion.div>
-            <h1 className="text-4xl font-black uppercase tracking-tighter mb-4">Compra Realizada!</h1>
-            <p className="text-gray-500 mb-12 max-w-md mx-auto">
-              Obrigado pela sua compra. Você será redirecionado em breve.
-            </p>
-            <Link href="/" className="btn-ll">
-              Voltar para Início
-            </Link>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
 
   if (cartCount === 0) {
     return (

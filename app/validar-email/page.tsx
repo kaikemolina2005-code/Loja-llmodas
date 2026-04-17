@@ -1,14 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react';
 
 export default function ValidarEmailPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const [status, setStatus] = useState<'loading' | 'success' | 'error'>('loading');
   const [message, setMessage] = useState('');
 
@@ -34,7 +33,7 @@ export default function ValidarEmailPage() {
 
           // Redirecionar após 3 segundos
           setTimeout(() => {
-            window.location.href = 'https://llmodas.shop/store/account';
+            window.location.href = '/minha-conta';
           }, 3000);
         } else {
           setStatus('error');
@@ -88,7 +87,7 @@ export default function ValidarEmailPage() {
             <p className="text-sm text-gray-500">
               Se não for redirecionado automaticamente,{' '}
               <a
-                href="https://llmodas.shop/store/account"
+                href="/minha-conta"
                 className="text-brand-pink hover:underline"
               >
                 clique aqui

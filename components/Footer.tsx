@@ -18,7 +18,7 @@ export const Footer = () => {
             <Link href="/" className="flex items-center gap-2 mb-6 group">
               <div className="relative w-10 h-10 overflow-hidden rounded-full shadow-md">
                 <Image 
-                  src="/ai-site2/logo.jpg" 
+                  src="/logo.jpg" 
                   alt={`${storeConfig.name} Logo`} 
                   fill 
                   className="object-cover"

@@ -45,7 +45,7 @@ function llmodas_ecwid_back_button() {
         <div style="height:44px;"></div>
         <script>
         document.getElementById('ecwid-back').addEventListener('click', function() {
-            window.location.href = 'https://llmodas.shop/ai-site2/';
+            window.location.href = 'https://loja-llmodas-seven.vercel.app/';
         });
         </script>
         <?php

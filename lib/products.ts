@@ -68,32 +68,35 @@ export const getEcwidProductUrl = (slug: string) => {
 const ECWID_CHECKOUT_BASE_URL = 'https://llmodas.shop/store/';
 
 export const getEcwidCheckoutUrl = (items: { id: number; id_ecwid?: string; quantity: number }[]) => {
-  const cartData = items
+  const products = items
     .filter(item => item.quantity > 0)
     .map(item => {
-      // Tenta usar id_ecwid se disponível e válido, senão usa id
       let ecwidId: number;
-      
+
       if (item.id_ecwid && item.id_ecwid.trim()) {
         ecwidId = Number(item.id_ecwid.trim());
       } else {
         ecwidId = item.id;
       }
-      
-      // Valida se é um número válido
+
       if (isNaN(ecwidId)) {
         console.warn(`ID inválido para produto: ${JSON.stringify(item)}`);
         ecwidId = item.id;
       }
-      
-      return `${ecwidId}:${item.quantity}`;
-    })
-    .join(',');
 
-  console.log('Carrinho para Ecwid:', cartData);
-  
-  return cartData
-    ? `${ECWID_CHECKOUT_BASE_URL}cart?add=${cartData}`
+      return {
+        id: ecwidId,
+        quantity: item.quantity,
+      };
+    });
+
+  const cartPayload = { products };
+  const encodedCart = encodeURIComponent(JSON.stringify(cartPayload));
+
+  console.log('Carrinho para Ecwid:', cartPayload);
+
+  return products.length > 0
+    ? `${ECWID_CHECKOUT_BASE_URL}#!/~/cart/create=${encodedCart}`
     : ECWID_CHECKOUT_BASE_URL;
 };
 

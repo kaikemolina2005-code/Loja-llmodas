@@ -7,7 +7,6 @@ import WhatsAppButton from '@/components/WhatsAppButton';
 import { storeConfig } from '@/config/store';
 import Script from 'next/script';
 import { ECWID_STORE_ID } from '@/lib/products';
-import EcwidRedirectHandler from '@/components/EcwidRedirectHandler';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -34,7 +33,6 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
         </head>
         <body className="font-sans" suppressHydrationWarning>
           <CartProvider>
-            <EcwidRedirectHandler />
             {children}
             <WhatsAppButton />
           </CartProvider>
