@@ -33,11 +33,11 @@ export const Footer = () => {
               O destino definitivo para moda minimalista moderna e itens essenciais de estilo de vida.
             </p>
             <div className="flex space-x-4">
-              <Link href="#" className="p-2 border border-gray-200 rounded-full hover:bg-black hover:text-white transition-all">
+              <a href="https://www.instagram.com/llmodas?igsh=MThna2RkNmJnNTE5OQ==" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-200 rounded-full hover:bg-black hover:text-white transition-all">
                 <Instagram size={18} />
-              </Link>
+              </a>
               <a
-                href="https://www.mercadolivre.com.br"
+                href="https://www.mercadolivre.com.br/pagina/llmodas7054?category_id=MLB108704&item_id=MLB6146325322&recos_listing=true&client=recoview-selleritems&seller_id=2720718320#origin=vpp"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="p-2 border border-gray-200 rounded-full hover:bg-[#ffe600] transition-all flex items-center justify-center"
