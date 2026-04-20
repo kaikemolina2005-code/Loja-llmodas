@@ -20,6 +20,19 @@ type Anuncio = {
   imagem: string;
 };
 
+const FALLBACK_ECWID_IDS = [
+  '830743346',
+  '830759284',
+  '830743366',
+  '830738103',
+  '830757044',
+  '830756020',
+  '830757045',
+  '830757001',
+  '830764001',
+  '830757065',
+];
+
 export default function AnunciosSection() {
   const router = useRouter();
   const [anuncios, setAnuncios] = useState<Anuncio[]>([]);
@@ -50,10 +63,12 @@ export default function AnunciosSection() {
     carregarAnuncios();
   }, []);
 
-  const handleAddToCart = (anuncio: Anuncio) => {
+  const handleAddToCart = (anuncio: Anuncio, anuncioIndex: number) => {
     const productSlug = getWordPressProductSlug(anuncio);
-    // Garante que id_ecwid é uma string válida
-    const ecwidId = (anuncio.id_ecwid?.trim() || '').toString();
+    const rawEcwidId = (anuncio.id_ecwid?.trim() || '').toString();
+    const fallbackEcwidId = FALLBACK_ECWID_IDS[anuncioIndex] || '';
+    // Prioriza ID vindo da API; se faltar/for inválido, usa fallback por posição do anúncio
+    const ecwidId = /^\d+$/.test(rawEcwidId) ? rawEcwidId : fallbackEcwidId;
     
     const wpProduct = {
       id: anuncio.id,  // Usar ID único do WordPress, não do Ecwid
@@ -65,7 +80,7 @@ export default function AnunciosSection() {
       categorySlug: "wordpress",
       description: anuncio.descricao_curta,
       details: [],
-      id_ecwid: ecwidId, // ID do Ecwid separado
+      id_ecwid: ecwidId,
       url_ecwid: anuncio.url_ecwid,
       isWordPress: true,
     };
@@ -73,9 +88,9 @@ export default function AnunciosSection() {
     addToCart(wpProduct);
   };
 
-  const handleComprar = (anuncio: Anuncio) => {
+  const handleComprar = (anuncio: Anuncio, anuncioIndex: number) => {
     try {
-      handleAddToCart(anuncio);
+      handleAddToCart(anuncio, anuncioIndex);
       router.push('/cart');
     } catch (error) {
       console.error("Erro ao comprar:", error);
@@ -113,7 +128,7 @@ export default function AnunciosSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {anuncios.map((anuncio) => {
+          {anuncios.map((anuncio, index) => {
             const esgotado = Number(anuncio.estoque) <= 0;
             const precoFormatado = anuncio.preco
               ? `R$ ${Number(anuncio.preco).toFixed(2).replace('.', ',')}`
@@ -163,7 +178,7 @@ export default function AnunciosSection() {
                 <div className="grid gap-3">
                   <button
                     type="button"
-                    onClick={() => handleComprar(anuncio)}
+                    onClick={() => handleComprar(anuncio, index)}
                     disabled={esgotado}
                     className="inline-flex items-center justify-center w-full rounded-[10px] bg-[#d28b95] px-4 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-white hover:bg-[#c86e8a] transition"
                   >
@@ -171,7 +186,7 @@ export default function AnunciosSection() {
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleAddToCart(anuncio)}
+                    onClick={() => handleAddToCart(anuncio, index)}
                     disabled={esgotado}
                     className="inline-flex items-center justify-center w-full rounded-[10px] border border-black bg-white px-4 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-black hover:bg-[#f7f2f2] transition"
                   >
