@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
-import { PRODUCTS, Product, formatPrice } from '@/lib/products';
+import { formatPrice } from '@/lib/products';
 
 import { useCart, ExtendedProduct } from '@/context/CartContext';
 import { motion } from 'motion/react';
@@ -18,12 +18,9 @@ export default function ProductPageClient({ slug, wpProduct }: { slug: string; w
   const { addToCart } = useCart();
 
   const router = useRouter();
-  const localProduct = PRODUCTS.find((p) => p.slug === slug);
-  const product = localProduct || wpProduct;
+  const product = wpProduct;
   const categoryLink = `/category/${product?.categorySlug}`;
-  const relatedProducts = localProduct
-    ? PRODUCTS.filter((p) => p.categorySlug === product?.categorySlug && p.id !== product?.id).slice(0, 3)
-    : [];
+  const relatedProducts: ExtendedProduct[] = [];
 
   if (!product) {
     return (

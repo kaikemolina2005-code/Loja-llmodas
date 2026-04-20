@@ -1,5 +1,5 @@
 import React from 'react';
-import { CATEGORIES } from '@/lib/products';
+import { fetchEcwidCategories } from '@/lib/ecwid';
 import CategoryPageClient from '@/components/CategoryPageClient';
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -8,7 +8,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 }
 
 export async function generateStaticParams() {
-  return CATEGORIES.map((category) => ({
-    slug: category.slug,
-  }));
+  try {
+    const categories = await fetchEcwidCategories();
+    return categories.map((category) => ({ slug: category.slug }));
+  } catch (error) {
+    return [];
+  }
 }

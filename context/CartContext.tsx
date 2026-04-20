@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Product, PRODUCTS } from '@/lib/products';
+import { Product } from '@/lib/products';
 
 // Extended Product type to support Ecwid metadata used no checkout
 export interface ExtendedProduct extends Product {

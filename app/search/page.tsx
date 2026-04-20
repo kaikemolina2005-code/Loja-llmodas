@@ -1,19 +1,37 @@
 'use client';
 
-import React, { use, Suspense } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ProductCard } from '@/components/ProductCard';
-import { PRODUCTS, formatPrice } from '@/lib/products';
+import { EcwidProduct } from '@/lib/ecwid';
 import Link from 'next/link';
 import { Search as SearchIcon } from 'lucide-react';
 
 function SearchResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
-  
-  const filteredProducts = PRODUCTS.filter((product) => 
+  const [allProducts, setAllProducts] = useState<EcwidProduct[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('/api/ecwid-products')
+      .then(r => r.json())
+      .then(data => setAllProducts(data.products || []))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <main className="pt-32 pb-24 flex items-center justify-center min-h-[60vh]">
+        <div className="w-12 h-12 border-4 border-brand-pink border-t-transparent rounded-full animate-spin"></div>
+      </main>
+    );
+  }
+
+  const filteredProducts = allProducts.filter((product) =>
     product.name.toLowerCase().includes(query.toLowerCase()) ||
     product.category.toLowerCase().includes(query.toLowerCase()) ||
     product.description.toLowerCase().includes(query.toLowerCase())
