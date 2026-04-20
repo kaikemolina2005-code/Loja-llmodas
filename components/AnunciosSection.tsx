@@ -39,6 +39,39 @@ export default function AnunciosSection() {
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
 
+  const fetchEcwidImage = async (urlEcwid: string): Promise<string> => {
+    try {
+      const res = await fetch(`/api/ecwid-image?url=${encodeURIComponent(urlEcwid)}`, {
+        cache: 'no-store',
+      });
+      if (!res.ok) return '';
+      const data = await res.json();
+      return typeof data?.image === 'string' ? data.image : '';
+    } catch {
+      return '';
+    }
+  };
+
+  const enrichWithEcwidImages = async (items: Anuncio[]) => {
+    const enriched = await Promise.all(
+      items.map(async (item) => {
+        if (item.imagem?.trim() || !item.url_ecwid?.trim()) {
+          return item;
+        }
+
+        const ecwidImage = await fetchEcwidImage(item.url_ecwid);
+        if (!ecwidImage) return item;
+
+        return {
+          ...item,
+          imagem: ecwidImage,
+        };
+      })
+    );
+
+    return enriched;
+  };
+
   useEffect(() => {
     async function carregarAnuncios() {
       try {
@@ -51,7 +84,9 @@ export default function AnunciosSection() {
         }
 
         const data = await res.json();
-        setAnuncios(Array.isArray(data) ? data : []);
+        const items = Array.isArray(data) ? data : [];
+        const itemsWithImages = await enrichWithEcwidImages(items);
+        setAnuncios(itemsWithImages);
       } catch (error) {
         console.error("Erro ao carregar anúncios:", error);
         setAnuncios([]);
