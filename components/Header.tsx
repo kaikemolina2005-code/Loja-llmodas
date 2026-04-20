@@ -121,17 +121,6 @@ export const Header = () => {
           ) : (
             <span className="text-gray-400 whitespace-nowrap">Carregando categorias...</span>
           )}
-          <div className="flex items-center gap-4">
-            {!userId ? (
-              <SignInButton mode="modal">
-                <button className="hover:text-brand-accent transition-colors whitespace-nowrap cursor-pointer uppercase text-xs tracking-widest font-bold">
-                  Minha Conta
-                </button>
-              </SignInButton>
-            ) : (
-              <UserButton />
-            )}
-          </div>
         </nav>
 
         <div className="flex items-center space-x-4">
@@ -185,8 +174,17 @@ export const Header = () => {
             )}
           </Link>
           <Link href="/minha-conta" className="p-2 hover:bg-black/5 rounded-full transition-colors" title="Minha Conta">
-            <User size={20} />
-          </Link>
+          <div className="flex items-center">
+            {!userId ? (
+              <SignInButton mode="modal">
+                <button className="p-2 hover:bg-black/5 rounded-full transition-colors" title="Minha Conta">
+                  <User size={20} />
+                </button>
+              </SignInButton>
+            ) : (
+              <UserButton afterSignOutUrl="/" />
+            )}
+          </div>
           <button className="md:hidden p-2" onClick={() => setIsMenuOpen(true)}>
             <Menu size={24} />
           </button>
