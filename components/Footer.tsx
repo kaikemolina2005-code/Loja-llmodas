@@ -43,14 +43,13 @@ export const Footer = () => {
                 className="p-2 border border-gray-200 rounded-full hover:bg-[#ffe600] transition-all flex items-center justify-center"
                 title="Mercado Livre"
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0z" fill="#FFE600"/>
-                  <path d="M12 3.6c-2.34 0-4.44 1.02-5.88 2.64l5.88 4.08 5.88-4.08C16.44 4.62 14.34 3.6 12 3.6z" fill="#333333"/>
-                  <path d="M6.12 6.24C4.98 7.56 4.2 9.24 4.2 11.16c0 .48.06.96.12 1.44l3.6-2.52-1.8-3.84z" fill="#333333"/>
-                  <path d="M17.88 6.24l-1.8 3.84 3.6 2.52c.06-.48.12-.96.12-1.44 0-1.92-.78-3.6-1.92-4.92z" fill="#333333"/>
-                  <path d="M4.38 13.2c.54 2.76 2.82 4.92 5.7 5.46l1.92-6-7.62.54z" fill="#333333"/>
-                  <path d="M19.62 13.2l-7.62-.54 1.92 6c2.88-.54 5.16-2.7 5.7-5.46z" fill="#333333"/>
-                </svg>
+                <Image
+                  src="/mercado-livre-logo.svg"
+                  alt="Mercado Livre"
+                  width={18}
+                  height={18}
+                  className="rounded-full"
+                />
               </a>
             </div>
           </div>
