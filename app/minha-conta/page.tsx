@@ -5,7 +5,6 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { useAuth, UserProfile } from '@clerk/nextjs';
 import Link from 'next/link';
-import { storeConfig } from '@/config/store';
 
 export default function MinhaContaPage() {
   const { userId } = useAuth();
@@ -14,49 +13,20 @@ export default function MinhaContaPage() {
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
       
-      <main className="flex-1 pt-24 pb-12">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="mb-12">
-            <h1 className="text-5xl font-black uppercase tracking-tighter mb-4">Minha Conta</h1>
-            <p className="text-gray-500">Gerencie suas informações e pedidos</p>
-          </div>
-
+      <main className="flex-1 pt-24 pb-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
           {userId ? (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* User Profile Section */}
-              <div className="lg:col-span-2">
-                <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
-                  <h2 className="text-2xl font-bold uppercase mb-6">Perfil do Usuário</h2>
-                  <UserProfile />
-                </div>
-              </div>
-
-              {/* Quick Links */}
-              <div className="space-y-4">
-                <div className="bg-brand-pink/10 border border-brand-pink/20 rounded-2xl p-6">
-                  <h3 className="font-bold uppercase mb-4">Links Rápidos</h3>
-                  <div className="space-y-3">
-                    <Link 
-                      href="/" 
-                      className="block text-sm font-bold uppercase text-brand-pink hover:text-brand-accent transition"
-                    >
-                      ← Voltar para Home
-                    </Link>
-                    <Link 
-                      href="/store" 
-                      className="block text-sm font-bold uppercase text-brand-pink hover:text-brand-accent transition"
-                    >
-                      Ver Produtos
-                    </Link>
-                    <Link 
-                      href="/cart" 
-                      className="block text-sm font-bold uppercase text-brand-pink hover:text-brand-accent transition"
-                    >
-                      Meu Carrinho
-                    </Link>
-                  </div>
-                </div>
-              </div>
+            <div className="flex justify-center">
+              <UserProfile
+                appearance={{
+                  elements: {
+                    rootBox: 'w-full',
+                    cardBox: 'shadow-lg border border-gray-200 rounded-2xl w-full max-w-3xl',
+                    navbar: 'border-r border-gray-200',
+                    pageScrollBox: 'p-4 sm:p-6',
+                  },
+                }}
+              />
             </div>
           ) : (
             <div className="bg-brand-pink/10 border border-brand-pink/20 rounded-2xl p-12 text-center">
