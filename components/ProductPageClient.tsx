@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -15,91 +15,15 @@ import { Star, ShoppingCart, ShieldCheck, Truck, RotateCcw } from 'lucide-react'
 
 export default function ProductPageClient({ slug, wpProduct }: { slug: string; wpProduct?: ExtendedProduct }) {
   const [quantity, setQuantity] = useState(1);
-  const [remoteProduct, setRemoteProduct] = useState<ExtendedProduct | null>(wpProduct ?? null);
-  const [isFetchingProduct, setIsFetchingProduct] = useState(false);
   const { addToCart } = useCart();
 
   const router = useRouter();
   const localProduct = PRODUCTS.find((p) => p.slug === slug);
-  const product = localProduct || wpProduct || remoteProduct;
-  const categoryLink = product && 'isWordPress' in product && product.isWordPress
-    ? '/store'
-    : `/category/${product?.categorySlug}`;
+  const product = localProduct || wpProduct;
+  const categoryLink = `/category/${product?.categorySlug}`;
   const relatedProducts = localProduct
     ? PRODUCTS.filter((p) => p.categorySlug === product?.categorySlug && p.id !== product?.id).slice(0, 3)
     : [];
-
-  useEffect(() => {
-    if (localProduct || wpProduct) {
-      return;
-    }
-
-    let active = true;
-
-    const fetchWordPressProduct = async () => {
-      setIsFetchingProduct(true);
-      try {
-        const res = await fetch('https://llmodas.shop/wp-json/site/v1/anuncios', {
-          cache: 'no-store',
-        });
-
-        if (!res.ok) {
-          throw new Error('Erro ao buscar produto WordPress');
-        }
-
-        const data = await res.json();
-        const anuncio = Array.isArray(data)
-          ? data.find((item: any) => {
-              const itemSlug = (item.id_ecwid?.toString().trim() || String(item.id)).toString();
-              return itemSlug === slug || String(item.id) === slug;
-            })
-          : null;
-
-        if (!anuncio || !active) {
-          return;
-        }
-
-        const itemSlug = (anuncio.id_ecwid?.toString().trim() || String(anuncio.id)).toString();
-        setRemoteProduct({
-          id: anuncio.id,  // Usar ID único do WordPress
-          slug: itemSlug,
-          name: anuncio.titulo,
-          price: Number(anuncio.preco) || 0,
-          image: anuncio.imagem,
-          category: 'WordPress',
-          categorySlug: 'wordpress',
-          description: anuncio.descricao_curta,
-          details: [],
-          id_ecwid: anuncio.id_ecwid,  // ID do Ecwid separado
-          url_ecwid: anuncio.url_ecwid,
-          isWordPress: true,
-        });
-      } catch (error) {
-        console.error('Erro ao carregar o produto WordPress:', error);
-      } finally {
-        if (active) {
-          setIsFetchingProduct(false);
-        }
-      }
-    };
-
-    fetchWordPressProduct();
-
-    return () => {
-      active = false;
-    };
-  }, [slug, localProduct, wpProduct]);
-
-  if (!product && isFetchingProduct) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f5f5f5]">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-brand-accent border-t-transparent rounded-full mx-auto mb-8 animate-spin" />
-          <h1 className="text-2xl font-bold uppercase tracking-tighter">Carregando produto...</h1>
-        </div>
-      </div>
-    );
-  }
 
   if (!product) {
     return (

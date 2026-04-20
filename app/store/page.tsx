@@ -9,7 +9,7 @@ export default function StorePage() {
             Store
           </h1>
           <p className="mt-3 text-sm md:text-base text-[#7c6c6c]">
-            Produtos cadastrados pela loja
+            Produtos sincronizados do Ecwid
           </p>
         </div>
       </div>

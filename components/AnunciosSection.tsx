@@ -4,34 +4,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
-import { getWordPressProductSlug } from "@/lib/products";
+import { EcwidProduct } from "@/lib/ecwid";
 
-type Anuncio = {
-  id: number;
-  titulo: string;
-  descricao_curta: string;
-  preco: string;
-  url_ecwid: string;
-  id_ecwid: string;
-  texto_botao: string;
-  destaque: string;
-  ordem: number;
-  estoque: number;
-  imagem: string;
-};
-
-const FALLBACK_ECWID_IDS = [
-  '830743346',
-  '830759284',
-  '830743366',
-  '830738103',
-  '830757044',
-  '830756020',
-  '830757045',
-  '830757001',
-  '830764001',
-  '830757065',
-];
+type Anuncio = EcwidProduct;
 
 export default function AnunciosSection() {
   const router = useRouter();
@@ -39,56 +14,22 @@ export default function AnunciosSection() {
   const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
 
-  const fetchEcwidImage = async (urlEcwid: string): Promise<string> => {
-    try {
-      const res = await fetch(`/api/ecwid-image?url=${encodeURIComponent(urlEcwid)}`, {
-        cache: 'no-store',
-      });
-      if (!res.ok) return '';
-      const data = await res.json();
-      return typeof data?.image === 'string' ? data.image : '';
-    } catch {
-      return '';
-    }
-  };
-
-  const enrichWithEcwidImages = async (items: Anuncio[]) => {
-    const enriched = await Promise.all(
-      items.map(async (item) => {
-        if (item.imagem?.trim() || !item.url_ecwid?.trim()) {
-          return item;
-        }
-
-        const ecwidImage = await fetchEcwidImage(item.url_ecwid);
-        if (!ecwidImage) return item;
-
-        return {
-          ...item,
-          imagem: ecwidImage,
-        };
-      })
-    );
-
-    return enriched;
-  };
-
   useEffect(() => {
     async function carregarAnuncios() {
       try {
-        const res = await fetch("https://llmodas.shop/wp-json/site/v1/anuncios", {
+        const res = await fetch("/api/ecwid-products", {
           cache: "no-store",
         });
 
         if (!res.ok) {
-          throw new Error("Erro ao buscar anúncios");
+          throw new Error("Erro ao buscar produtos Ecwid");
         }
 
         const data = await res.json();
-        const items = Array.isArray(data) ? data : [];
-        const itemsWithImages = await enrichWithEcwidImages(items);
-        setAnuncios(itemsWithImages);
+        const items = Array.isArray(data?.products) ? (data.products as Anuncio[]) : [];
+        setAnuncios(items);
       } catch (error) {
-        console.error("Erro ao carregar anúncios:", error);
+        console.error("Erro ao carregar produtos Ecwid:", error);
         setAnuncios([]);
       } finally {
         setLoading(false);
@@ -98,34 +39,13 @@ export default function AnunciosSection() {
     carregarAnuncios();
   }, []);
 
-  const handleAddToCart = (anuncio: Anuncio, anuncioIndex: number) => {
-    const productSlug = getWordPressProductSlug(anuncio);
-    const rawEcwidId = (anuncio.id_ecwid?.trim() || '').toString();
-    const fallbackEcwidId = FALLBACK_ECWID_IDS[anuncioIndex] || '';
-    // Prioriza ID vindo da API; se faltar/for inválido, usa fallback por posição do anúncio
-    const ecwidId = /^\d+$/.test(rawEcwidId) ? rawEcwidId : fallbackEcwidId;
-    
-    const wpProduct = {
-      id: anuncio.id,  // Usar ID único do WordPress, não do Ecwid
-      slug: productSlug,
-      name: anuncio.titulo,
-      price: Number(anuncio.preco) || 0,
-      image: anuncio.imagem,
-      category: "WordPress",
-      categorySlug: "wordpress",
-      description: anuncio.descricao_curta,
-      details: [],
-      id_ecwid: ecwidId,
-      url_ecwid: anuncio.url_ecwid,
-      isWordPress: true,
-    };
-
-    addToCart(wpProduct);
+  const handleAddToCart = (anuncio: Anuncio) => {
+    addToCart(anuncio);
   };
 
-  const handleComprar = (anuncio: Anuncio, anuncioIndex: number) => {
+  const handleComprar = (anuncio: Anuncio) => {
     try {
-      handleAddToCart(anuncio, anuncioIndex);
+      handleAddToCart(anuncio);
       router.push('/cart');
     } catch (error) {
       console.error("Erro ao comprar:", error);
@@ -163,21 +83,20 @@ export default function AnunciosSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {anuncios.map((anuncio, index) => {
-            const esgotado = Number(anuncio.estoque) <= 0;
-            const precoFormatado = anuncio.preco
-              ? `R$ ${Number(anuncio.preco).toFixed(2).replace('.', ',')}`
+          {anuncios.map((anuncio) => {
+            const precoFormatado = anuncio.price
+              ? `R$ ${Number(anuncio.price).toFixed(2).replace('.', ',')}`
               : '';
-            const productSlug = getWordPressProductSlug(anuncio);
+            const productSlug = String(anuncio.id);
 
             return (
               <div key={anuncio.id} className="group relative bg-white border border-gray-100 p-4 rounded-xl shadow-sm hover:shadow-xl transition-all duration-300">
                 <Link href={`/product/${encodeURIComponent(productSlug)}`} className="block">
                   <div className="relative aspect-[3/4] overflow-hidden rounded-lg mb-4 bg-gray-100">
-                    {anuncio.imagem ? (
+                    {anuncio.image ? (
                       <img
-                        src={anuncio.imagem}
-                        alt={anuncio.titulo}
+                        src={anuncio.image}
+                        alt={anuncio.name}
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
                     ) : (
@@ -185,7 +104,7 @@ export default function AnunciosSection() {
                     )}
                     <div className="absolute top-4 left-4">
                       <span className="bg-black text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded">
-                        WordPress
+                        Ecwid
                       </span>
                     </div>
                   </div>
@@ -194,7 +113,7 @@ export default function AnunciosSection() {
                 <div className="flex justify-between items-start gap-3">
                   <Link href={`/product/${encodeURIComponent(productSlug)}`} className="grow">
                     <h3 className="font-bold text-sm uppercase tracking-tight mb-2 hover:text-brand-accent transition-colors">
-                      {anuncio.titulo}
+                      {anuncio.name}
                     </h3>
                   </Link>
                   {precoFormatado ? (
@@ -204,25 +123,23 @@ export default function AnunciosSection() {
                   ) : null}
                 </div>
 
-                {anuncio.descricao_curta ? (
+                {anuncio.description ? (
                   <p className="text-[12px] text-[#7c6c6c] line-clamp-2 mb-4">
-                    {anuncio.descricao_curta}
+                    {anuncio.description}
                   </p>
                 ) : null}
 
                 <div className="grid gap-3">
                   <button
                     type="button"
-                    onClick={() => handleComprar(anuncio, index)}
-                    disabled={esgotado}
+                    onClick={() => handleComprar(anuncio)}
                     className="inline-flex items-center justify-center w-full rounded-[10px] bg-[#d28b95] px-4 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-white hover:bg-[#c86e8a] transition"
                   >
-                    {anuncio.texto_botao || 'Comprar agora'}
+                    Comprar agora
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleAddToCart(anuncio, index)}
-                    disabled={esgotado}
+                    onClick={() => handleAddToCart(anuncio)}
                     className="inline-flex items-center justify-center w-full rounded-[10px] border border-black bg-white px-4 py-3 text-[11px] font-bold uppercase tracking-[0.08em] text-black hover:bg-[#f7f2f2] transition"
                   >
                     Adicionar ao Carrinho

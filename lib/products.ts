@@ -12,48 +12,6 @@ export interface Product {
   details: string[];
 }
 
-export interface WordPressAnuncio {
-  id: number;
-  titulo: string;
-  descricao_curta: string;
-  preco: string;
-  url_ecwid: string;
-  id_ecwid: string;
-  texto_botao: string;
-  destaque: string;
-  ordem: number;
-  estoque: number;
-  imagem: string;
-}
-
-/**
- * Normaliza um valor para string e remove espaços
- */
-const normalizeSlug = (value: string | number | undefined | null) => String(value ?? '').trim();
-
-/**
- * Gera slug consistente para produtos WordPress
- * Prioridade: id_ecwid > titulo normalizado > id
- */
-export const getWordPressProductSlug = (product: WordPressAnuncio | { id_ecwid?: string; id: number; titulo?: string }): string => {
-  // Prioridade 1: id_ecwid (se tiver)
-  const idEcwid = normalizeSlug((product as any).id_ecwid);
-  if (idEcwid) return idEcwid;
-  
-  // Prioridade 2: slug derivado do título
-  const title = normalizeSlug((product as any).titulo);
-  if (title) {
-    const slugFromTitle = title
-      .toLowerCase()
-      .replace(/\s+/g, '-')
-      .replace(/[^\w-]/g, '');
-    if (slugFromTitle) return slugFromTitle;
-  }
-  
-  // Prioridade 3: id como última opção
-  return normalizeSlug((product as any).id);
-};
-
 export const formatPrice = (price: number) => {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -207,40 +165,4 @@ export const CATEGORIES = [
   { name: 'Conjuntos', slug: 'conjuntos', image: '/products/conjunto-alfaiataria-short.webp' },
   { name: 'Novidades', slug: 'novidades', image: '/products/vestido-longo-elastex.webp' },
 ];
-
-export const fetchWordPressCategories = async () => {
-  try {
-    const res = await fetch('https://llmodas.shop/wp-json/site/v1/anuncios', {
-      cache: 'no-store'
-    });
-    if (!res.ok) throw new Error('Erro ao buscar anúncios');
-
-    const anuncios = await res.json();
-    if (!Array.isArray(anuncios)) return CATEGORIES; // fallback to static categories
-
-    // Extract unique categories from WordPress products
-    const wpCategories = new Map();
-
-    anuncios.forEach((anuncio: any) => {
-      if (anuncio.categoria && anuncio.categoria.slug) {
-        const slug = anuncio.categoria.slug;
-        const name = anuncio.categoria.name || slug;
-        if (!wpCategories.has(slug)) {
-          wpCategories.set(slug, {
-            name: name,
-            slug: slug,
-            image: anuncio.imagem || '/products/default.webp'
-          });
-        }
-      }
-    });
-
-    // Convert to array and merge with static categories
-    const dynamicCategories = Array.from(wpCategories.values());
-    return [...CATEGORIES, ...dynamicCategories];
-  } catch (error) {
-    console.error('Erro ao buscar categorias WordPress:', error);
-    return CATEGORIES; // fallback to static categories
-  }
-};
 

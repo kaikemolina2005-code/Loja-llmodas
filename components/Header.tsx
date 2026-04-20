@@ -8,7 +8,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation';
 import { storeConfig } from '@/config/store';
-import { fetchWordPressCategories } from '@/lib/products';
 import { useAuth } from "@clerk/nextjs";
 import { SignInButton, UserButton } from "@clerk/nextjs";
 
@@ -57,8 +56,21 @@ export const Header = () => {
 
   useEffect(() => {
     const loadCategories = async () => {
-      const fetchedCategories = await fetchWordPressCategories();
-      setCategories(fetchedCategories);
+      try {
+        const response = await fetch('/api/ecwid-products', { cache: 'no-store' });
+        const data = await response.json();
+        const fetchedCategories = Array.isArray(data?.categories)
+          ? data.categories.map((category: any) => ({
+              name: category.name,
+              slug: category.slug,
+              image: '/products/default.webp',
+            }))
+          : [];
+        setCategories(fetchedCategories);
+      } catch (error) {
+        console.error('Erro ao carregar categorias Ecwid:', error);
+        setCategories([]);
+      }
     };
     loadCategories();
   }, []);

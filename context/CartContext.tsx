@@ -3,11 +3,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { Product, PRODUCTS } from '@/lib/products';
 
-// Extended Product type to support WordPress/Ecwid products
+// Extended Product type to support Ecwid metadata used no checkout
 export interface ExtendedProduct extends Product {
   id_ecwid?: string;
   url_ecwid?: string;
-  isWordPress?: boolean;
 }
 
 interface CartItem extends ExtendedProduct {
@@ -36,7 +35,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       if (savedCart) {
         try {
           const parsed = JSON.parse(savedCart) as CartItem[];
-          // Accept both local products and WordPress products
           setCart(parsed);
         } catch (e) {
           console.error('Failed to parse cart from localStorage', e);
