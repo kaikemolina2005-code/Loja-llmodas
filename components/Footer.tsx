@@ -34,7 +34,7 @@ export const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a href="https://www.instagram.com/llmodas?igsh=MThna2RkNmJnNTE5OQ==" target="_blank" rel="noopener noreferrer" className="p-2 border border-gray-200 rounded-full hover:bg-black hover:text-white transition-all">
-                <Instagram size={18} />
+                <Instagram size={20} />
               </a>
               <a
                 href="https://www.mercadolivre.com.br/pagina/llmodas7054?category_id=MLB108704&item_id=MLB6146325322&recos_listing=true&client=recoview-selleritems&seller_id=2720718320#origin=vpp"
@@ -46,8 +46,8 @@ export const Footer = () => {
                 <Image
                   src="/mercado-livre-logo.svg"
                   alt="Mercado Livre"
-                  width={18}
-                  height={18}
+                  width={20}
+                  height={20}
                   className="rounded-full"
                 />
               </a>
