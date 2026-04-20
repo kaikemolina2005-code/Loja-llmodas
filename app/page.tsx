@@ -7,8 +7,8 @@ import { ArrowRight, ShoppingCart, Star, Menu } from 'lucide-react';
 import { motion } from 'motion/react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { ProductCard } from '@/components/ProductCard';
-import { PRODUCTS, CATEGORIES } from '@/lib/products';
+import AnunciosSection from '@/components/AnunciosSection';
+import { CATEGORIES } from '@/lib/products';
 import { storeConfig } from '@/config/store';
 
 const Hero = () => {
@@ -94,24 +94,9 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Featured Section */}
-        <section id="shop" className="py-24 max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-            <div>
-              <span className="text-xs font-bold tracking-[0.3em] uppercase text-gray-400 mb-2 block">Seleção Curada</span>
-              <h2 className="text-4xl font-black uppercase tracking-tighter">Produtos em Destaque</h2>
-            </div>
-            <Link href="#" className="mt-4 md:mt-0 text-xs font-bold uppercase tracking-widest border-b-2 border-brand-pink pb-1 hover:text-brand-pink/80 hover:border-brand-pink/80 transition-all">
-              Ver Todos os Produtos
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {PRODUCTS.filter(product => product.id !== 828720114).map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </section>
+        <div id="shop">
+          <AnunciosSection />
+        </div>
 
         {/* Promo Section */}
         <section className="py-24 bg-black text-white overflow-hidden relative">

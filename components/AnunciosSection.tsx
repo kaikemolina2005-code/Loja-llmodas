@@ -64,7 +64,22 @@ export default function AnunciosSection() {
   }
 
   if (!anuncios.length) {
-    return null;
+    return (
+      <section className="w-full px-4 md:px-8 py-12 bg-[#f6efef]">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#8f5f67] mb-3">
+            Ecwid
+          </p>
+          <h2 className="text-2xl md:text-3xl font-extrabold uppercase tracking-tight text-[#3b2b2b] mb-4">
+            Produtos em sincronizacao
+          </h2>
+          <p className="text-sm text-[#7c6c6c] max-w-xl mx-auto">
+            Os produtos antigos foram removidos da home. Assim que o token da API do Ecwid for configurado,
+            os produtos oficiais da loja aparecerao aqui automaticamente.
+          </p>
+        </div>
+      </section>
+    );
   }
 
   return (
