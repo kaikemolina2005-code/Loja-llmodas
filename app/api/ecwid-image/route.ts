@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const ALLOWED_HOST = 'llmodas.shop';
+const ALLOWED_HOST = process.env.NEXT_PUBLIC_STORE_URL
+  ? new URL(process.env.NEXT_PUBLIC_STORE_URL).hostname
+  : 'llmodas.shop';
 
 function extractImageFromHtml(html: string): string | null {
   const ogImageMatch = html.match(/<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']+)["'][^>]*>/i);

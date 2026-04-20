@@ -32,10 +32,10 @@ export interface EcwidCategory {
   slug: string;
 }
 
-const DEFAULT_STORE_ID = '134156251';
+const DEFAULT_STORE_ID = process.env.NEXT_PUBLIC_ECWID_STORE_ID || '';
 
 export const getEcwidStoreId = () => {
-  return process.env.ECWID_STORE_ID || process.env.NEXT_PUBLIC_ECWID_STORE_ID || DEFAULT_STORE_ID;
+  return process.env.NEXT_PUBLIC_ECWID_STORE_ID || process.env.ECWID_STORE_ID || DEFAULT_STORE_ID;
 };
 
 const stripHtml = (value: string) => value.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
@@ -54,7 +54,7 @@ export const mapEcwidProduct = (item: EcwidApiProduct): EcwidProduct => {
   const categoryName = item.categoryIds?.length ? `Categoria ${item.categoryIds[0]}` : 'Ecwid';
   const categorySlug = item.categoryIds?.length ? `categoria-${item.categoryIds[0]}` : 'ecwid';
   const image = item.thumbnailUrl || item.originalImageUrl || item.imageUrl || '/products/default.webp';
-  const productUrl = item.url || `https://llmodas.shop/store/#!/~/p/${item.id}`;
+  const productUrl = item.url || `${process.env.NEXT_PUBLIC_STORE_URL || ''}/store/#!/~/p/${item.id}`;
 
   return {
     id: item.id,

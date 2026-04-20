@@ -14,7 +14,17 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'llmodas.shop',
+        hostname: '*.shop',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.com.br',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '*.vercel.app',
         pathname: '/**',
       },
       {

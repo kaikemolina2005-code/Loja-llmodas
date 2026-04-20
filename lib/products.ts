@@ -1,4 +1,4 @@
-export const ECWID_STORE_ID = '134156251';
+export const ECWID_STORE_ID = process.env.NEXT_PUBLIC_ECWID_STORE_ID || '';
 
 export interface Product {
   id: number;
@@ -20,10 +20,11 @@ export const formatPrice = (price: number) => {
 };
 
 export const getEcwidProductUrl = (slug: string) => {
-  return `https://llmodas.shop/store/${slug}`;
+  const base = process.env.NEXT_PUBLIC_STORE_URL || '';
+  return `${base}/store/${slug}`;
 };
 
-const ECWID_CHECKOUT_BASE_URL = 'https://llmodas.shop/store/';
+const ECWID_CHECKOUT_BASE_URL = `${process.env.NEXT_PUBLIC_STORE_URL || ''}/store/`;
 
 export const getEcwidCheckoutUrl = (items: { id: number; id_ecwid?: string; quantity: number }[]) => {
   const products = items
