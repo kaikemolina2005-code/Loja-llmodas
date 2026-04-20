@@ -117,6 +117,9 @@ export const Header = () => {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-4 lg:space-x-6 xl:space-x-8 font-bold uppercase text-xs tracking-widest text-brand-dark flex-wrap justify-center">
           <Link href="/" className="hover:text-brand-accent transition-colors whitespace-nowrap">Home</Link>
+          <Link href="/promocoes" className="hover:text-brand-accent transition-colors whitespace-nowrap">Promoções</Link>
+          <Link href="/novidades" className="hover:text-brand-accent transition-colors whitespace-nowrap">Novidades</Link>
+          <Link href="/sobre" className="hover:text-brand-accent transition-colors whitespace-nowrap">Sobre</Link>
           {categories.length > 0 ? (
             categories.slice(0, 10).map((category) => (
               <Link
@@ -216,6 +219,9 @@ export const Header = () => {
             </div>
             <nav className="flex flex-col space-y-8 mt-12 text-3xl font-black uppercase tracking-tighter">
               <Link href="/" onClick={() => setIsMenuOpen(false)}>Home</Link>
+              <Link href="/promocoes" onClick={() => setIsMenuOpen(false)}>Promoções</Link>
+              <Link href="/novidades" onClick={() => setIsMenuOpen(false)}>Novidades</Link>
+              <Link href="/sobre" onClick={() => setIsMenuOpen(false)}>Sobre</Link>
               {categories.length > 0 ? (
                 categories.slice(0, 10).map((category) => (
                   <Link
