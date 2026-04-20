@@ -184,6 +184,9 @@ export const Header = () => {
               </span>
             )}
           </Link>
+          <Link href="/minha-conta" className="p-2 hover:bg-black/5 rounded-full transition-colors" title="Minha Conta">
+            <User size={20} />
+          </Link>
           <button className="md:hidden p-2" onClick={() => setIsMenuOpen(true)}>
             <Menu size={24} />
           </button>
