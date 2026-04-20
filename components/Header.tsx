@@ -81,7 +81,7 @@ export const Header = () => {
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsCategoryMenuOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-white text-black border-2 border-black rounded-full shadow-md hover:shadow-lg hover:bg-white transition-all text-[10px] uppercase tracking-widest font-extrabold"
+            className="inline-flex items-center gap-2 px-3 py-2 border border-white rounded-full hover:bg-white/10 transition-colors text-[10px] uppercase tracking-widest font-bold text-white"
           >
             <List size={16} />
             Categorias
