@@ -120,19 +120,6 @@ export const Header = () => {
           <Link href="/promocoes" className="hover:text-brand-accent transition-colors whitespace-nowrap">Promoções</Link>
           <Link href="/novidades" className="hover:text-brand-accent transition-colors whitespace-nowrap">Novidades</Link>
           <Link href="/sobre" className="hover:text-brand-accent transition-colors whitespace-nowrap">Sobre</Link>
-          {categories.length > 0 ? (
-            categories.slice(0, 10).map((category) => (
-              <Link
-                key={category.slug}
-                href={`/category/${category.slug}`}
-                className="hover:text-brand-accent transition-colors whitespace-nowrap"
-              >
-                {category.name}
-              </Link>
-            ))
-          ) : (
-            <span className="text-gray-400 whitespace-nowrap">Carregando categorias...</span>
-          )}
         </nav>
 
         <div className="flex items-center space-x-4">
