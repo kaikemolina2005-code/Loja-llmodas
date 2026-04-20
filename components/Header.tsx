@@ -75,8 +75,17 @@ export const Header = () => {
     loadCategories();
   }, []);
 
+  useEffect(() => {
+    const shouldLockScroll = isCategoryMenuOpen || isMenuOpen;
+    document.body.style.overflow = shouldLockScroll ? 'hidden' : '';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isCategoryMenuOpen, isMenuOpen]);
+
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled && !isCategoryMenuOpen ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
@@ -244,7 +253,7 @@ export const Header = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[70] bg-black/40"
+            className="fixed inset-0 z-[70] h-dvh bg-black/40 overflow-hidden"
             onClick={() => setIsCategoryMenuOpen(false)}
           >
             <motion.aside
@@ -252,7 +261,7 @@ export const Header = () => {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="relative left-0 top-0 h-full w-full max-w-xs bg-white shadow-2xl p-6 overflow-y-auto"
+              className="absolute left-0 top-0 h-dvh w-full max-w-xs bg-white shadow-2xl p-6 overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-6">
