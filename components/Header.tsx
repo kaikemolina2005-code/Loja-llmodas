@@ -173,7 +173,6 @@ export const Header = () => {
               </span>
             )}
           </Link>
-          <Link href="/minha-conta" className="p-2 hover:bg-black/5 rounded-full transition-colors" title="Minha Conta">
           <div className="flex items-center">
             {!userId ? (
               <SignInButton mode="modal">
@@ -182,7 +181,7 @@ export const Header = () => {
                 </button>
               </SignInButton>
             ) : (
-              <UserButton afterSignOutUrl="/" />
+              <UserButton />
             )}
           </div>
           <button className="md:hidden p-2" onClick={() => setIsMenuOpen(true)}>
